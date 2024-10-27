@@ -1,8 +1,8 @@
 mkdir -p ~/.streamlit/
 
 echo "\
-[general]\n\
-email = \"rzhaoag@connect.ust.hk\"\n\
+[general]
+email = "rzhaoag@connect.ust.hk"
 " > ~/.streamlit/credentials.toml
 
 echo "\
