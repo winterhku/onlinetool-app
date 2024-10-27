@@ -1,3 +1,7 @@
 [server]
+headless = true
 enableCORS = true
 enableXsrfProtection = false
+
+[browser]
+gatherUsageStats = false
