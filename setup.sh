@@ -1,4 +1,3 @@
-#!/bin/bash
 mkdir -p ~/.streamlit/
 
 echo "\
@@ -9,6 +8,6 @@ email = \"rzhaoag@connect.ust.hk\"\n\
 echo "\
 [server]\n\
 headless = true\n\
-enableCORS = false\n\
+enableCORS=false\n\
 port = $PORT\n\
 " > ~/.streamlit/config.toml
