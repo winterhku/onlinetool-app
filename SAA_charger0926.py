@@ -445,8 +445,8 @@ class LBBD(object):
 
 if __name__ == '__main__':
     LBBD_solver = LBBD()
-    demand_file_path = 'C:/Users/myhom/Downloads/A_update.csv'
-    parameter_file_path = 'C:/Users/myhom/Downloads/B_update.csv'
+    demand_file_path = './A_update.csv'
+    parameter_file_path = './B_update.csv'
     # LBBD_solver.set_instance()
     LBBD_solver.read_instance(demand_file_path, parameter_file_path, 100000000, 100, 2,
                               60)  # input_budget,input_maxstation,input_objtype,input_timelimit,
