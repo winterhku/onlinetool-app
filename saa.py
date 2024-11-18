@@ -182,8 +182,8 @@ def main():
         LBBD_solver = LBBD()
 
         # 读取数据文件
-        demand_file_path = 'C:/Users/myhom/Downloads/A_update.csv'
-        parameter_file_path = 'C:/Users/myhom/Downloads/B_update.csv'
+        demand_file_path = './A_update.csv'
+        parameter_file_path = './B_update.csv'
 
         # 读取A文件
         df_a = pd.read_csv(demand_file_path)
