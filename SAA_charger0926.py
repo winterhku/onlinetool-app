@@ -35,50 +35,50 @@ class LBBD(object):
         self.end_time = time.time()
         self.CPU_time = 0
 
-    def set_instance(self):
-        self.T = 24  # Period
-        self.A = 17  # Number of area:屯门	元朗	荃湾	深水埗	油尖旺	九龙城	北区	大埔	中西区	沙田	黄大仙	东区	观塘	离岛	南区	西贡	葵青
-        self.P = 100  # Number of candidate stations
-        self.scenario = 1  # FIXME: 没有随机性，设置成1
-        # random generate station id
-        self.station_points = list(range(self.P))
-        np.random.seed(42)
-        self.regions = [[] for _ in range(
-            self.A)]  # record the ownership, This is randomly generated, and you need to replace it with read data
-        for point in self.station_points:
-            region_index = np.random.randint(0, self.A)
-            self.regions[region_index].append(point)
-
-        self.F = (np.random.randint(50000, 100000, self.P) / 365).astype(int)  # rebuilding cost in p station
-        self.C1 = (np.random.randint(4000, 8000, self.P) / 30).astype(int)  # fix recent cost in p station
-        self.C2 = (np.array([30000, 100000]) / 365).astype(int)  # buy cost
-        # self.C2 = (np.array([30000, 50000, 100000]) / 365).astype(int)  # bug cost
-        self.N = [2, 12]  # service capacity per unit time of a super charger  # FIXME: 快慢充，可以设置成三个但需要注释掉有效不等式
-        # self.N = [1, 2, 12]  # service capacity per unit time of a super charger
-        self.C = np.add.outer(self.C1, self.C2)  # [p,k]
-        self.K = len(self.C2)
-        self.D = 0.5 * np.random.randint(600, 800,
-                                         (self.A, self.T, self.K, self.scenario))  # demand in area a in time t
-        self.D_p = 0.5 * np.random.randint(40, 80,
-                                           (self.P, self.T, self.K, self.scenario))  # demand in candidation p in time t
-        self.R = np.round(np.random.random(self.P),
-                          decimals=1)  # the distance rate from station p to the center of its area
-        self.U = np.random.randint(50, 100, self.P)  # The maximum number of charging piles allowed in station p
-        self.gamma = np.round(0.1 * np.random.random(
-            (self.P, self.T, self.K)),
-                              decimals=1)  # Minimum coverage demand ratio in t period in station p # FIXME: 设置的太大会导致无解
-        self.B = 0.5 * np.random.randint(20, 60, (
-        self.P, self.K))  # unit time charging capacity of existing charging piles in station p
-        self.B_a = 0.5 * np.random.randint(400, 600, (
-        self.A, self.K))  # unit time charging capacity of existing charging piles in area A
-        self.alpha = np.round(0.05 * np.random.random((self.P, self.T, self.K)),
-                              decimals=1)  # increase rate due to new chargers]\
-        self.W = np.random.randint(400, 800, (self.P, self.T))
-        # self.belta = np.round(np.random.uniform(0.6, 0.9, self.A),2)
-        # self.phi = np.round(np.random.uniform(0.1, 0.2, (self.P, self.T, self.K)),decimals=1)
-        self.L = 10.24  # capacity
-        self.l = np.random.randint(4, 5, (self.T))
-        self.CC = (np.random.randint(36000, 42000, self.P) / 365).astype(int)
+    # def set_instance(self):
+    #     self.T = 24  # Period
+    #     self.A = 17  # Number of area:屯门	元朗	荃湾	深水埗	油尖旺	九龙城	北区	大埔	中西区	沙田	黄大仙	东区	观塘	离岛	南区	西贡	葵青
+    #     self.P = 100  # Number of candidate stations
+    #     self.scenario = 1  # FIXME: 没有随机性，设置成1
+    #     # random generate station id
+    #     self.station_points = list(range(self.P))
+    #     np.random.seed(42)
+    #     self.regions = [[] for _ in range(
+    #         self.A)]  # record the ownership, This is randomly generated, and you need to replace it with read data
+    #     for point in self.station_points:
+    #         region_index = np.random.randint(0, self.A)
+    #         self.regions[region_index].append(point)
+    #
+    #     self.F = (np.random.randint(50000, 100000, self.P) / 365).astype(int)  # rebuilding cost in p station
+    #     self.C1 = (np.random.randint(4000, 8000, self.P) / 30).astype(int)  # fix recent cost in p station
+    #     self.C2 = (np.array([30000, 100000]) / 365).astype(int)  # buy cost
+    #     # self.C2 = (np.array([30000, 50000, 100000]) / 365).astype(int)  # bug cost
+    #     self.N = [2, 12]  # service capacity per unit time of a super charger  # FIXME: 快慢充，可以设置成三个但需要注释掉有效不等式
+    #     # self.N = [1, 2, 12]  # service capacity per unit time of a super charger
+    #     self.C = np.add.outer(self.C1, self.C2)  # [p,k]
+    #     self.K = len(self.C2)
+    #     self.D = 0.5 * np.random.randint(600, 800,
+    #                                      (self.A, self.T, self.K, self.scenario))  # demand in area a in time t
+    #     self.D_p = 0.5 * np.random.randint(40, 80,
+    #                                        (self.P, self.T, self.K, self.scenario))  # demand in candidation p in time t
+    #     self.R = np.round(np.random.random(self.P),
+    #                       decimals=1)  # the distance rate from station p to the center of its area
+    #     self.U = np.random.randint(50, 100, self.P)  # The maximum number of charging piles allowed in station p
+    #     self.gamma = np.round(0.1 * np.random.random(
+    #         (self.P, self.T, self.K)),
+    #                           decimals=1)  # Minimum coverage demand ratio in t period in station p # FIXME: 设置的太大会导致无解
+    #     self.B = 0.5 * np.random.randint(20, 60, (
+    #     self.P, self.K))  # unit time charging capacity of existing charging piles in station p
+    #     self.B_a = 0.5 * np.random.randint(400, 600, (
+    #     self.A, self.K))  # unit time charging capacity of existing charging piles in area A
+    #     self.alpha = np.round(0.05 * np.random.random((self.P, self.T, self.K)),
+    #                           decimals=1)  # increase rate due to new chargers]\
+    #     self.W = np.random.randint(400, 800, (self.P, self.T))
+    #     # self.belta = np.round(np.random.uniform(0.6, 0.9, self.A),2)
+    #     # self.phi = np.round(np.random.uniform(0.1, 0.2, (self.P, self.T, self.K)),decimals=1)
+    #     self.L = 10.24  # capacity
+    #     self.l = np.random.randint(4, 5, (self.T))
+    #     self.CC = (np.random.randint(36000, 42000, self.P) / 365).astype(int)
 
     def read_instance(self, demand_file_path, parameter_file_path, input_budget, input_maxstation, input_objtype,
                       input_timelimit):
@@ -116,7 +116,7 @@ class LBBD(object):
 
         # self.F = (np.random.randint(50000, 100000, self.P) / 365).astype(int)  # rebuilding cost in p station
         self.F = parameter_df["Average_Property_Rent"].values / 30  # NOTE: 建设成本，用月租金摊到天上
-        self.C1 = (np.random.randint(4000, 8000, self.P) / 30).astype(int)  # fix recent cost in p station # TODO:
+        self.C1 = (np.random.randint(4000, 6000, self.P) / 30).astype(int)  # fix recent cost in p station # TODO:
         self.C2 = (np.array([5000, 20000]) / 365).astype(int)  # buy cost  # NOTE: 买充电桩的价格 先慢冲后快充
         self.N = [1, 6]  # service capacity per unit time of a super charger  # NOTE: 慢快充每小时能服务的数量
         self.C = np.add.outer(self.C1, self.C2)  # [p,k]
@@ -131,7 +131,7 @@ class LBBD(object):
             p_belong_to_district = district_to_id_dict[parameter_df.loc[p, "District"]]
             self.D_p[p, t, 0, 0] = demand * low_ratio[p_belong_to_district]  # NOTE: 慢充需求
             self.D_p[p, t, 1, 0] = demand * (1 - low_ratio[p_belong_to_district])  # NOTE: 快充需求
-        self.D_p = self.D_p / 24 / 2.6
+        self.D_p = self.D_p / 24 / 12
         self.D = np.zeros((self.A, self.T, self.K, self.scenario))  # demand in area a in time t  # NOTE: 每个A区域内慢冲/快冲需求
         for region in range(self.A):
             self.D[region] = np.sum(self.D_p[self.regions[region]], axis=0)
@@ -139,13 +139,13 @@ class LBBD(object):
                           decimals=1)  # the distance rate from station p to the center of its area
 
         # self.U = np.random.randint(50, 100, self.P)  # The maximum number of charging piles allowed in station p
-        self.U = 2000000 * (parameter_df["最大可设置充电桩数量"].values + 1)  # NOTE: 充电桩数量上限
+        self.U = 50 + (parameter_df["最大可设置充电桩数量"].values + 1)  # NOTE: 充电桩数量上限
         self.B = np.zeros((self.P,
                            self.K))  # unit time charging capacity of existing charging piles in station p  # NOTE: 每个P点慢冲/快冲每小时能服务的车的数量
         for index, row in parameter_df.iterrows():
             p_belong_to_district = district_to_id_dict[row["District"]]
             ratio = low_ratio[p_belong_to_district]
-            self.B[index] = row["Total_Capacity"] * np.array([ratio, 6 * (1 - ratio)])  # NOTE: 每个P点慢冲/快冲每小时能服务的车的数量
+            self.B[index] = row["Total_Capacity"]/24 * np.array([ratio,  (1 - ratio)])  # NOTE: 每个P点慢冲/快冲每小时能服务的车的数量
 
         self.B_a = np.zeros((self.A,
                              self.K))  # unit time charging capacity of existing charging piles in area A  # NOTE: 每个A区域内慢冲/快冲每小时能服务的车的数量
@@ -157,12 +157,12 @@ class LBBD(object):
         self.alpha = np.round(0.7 * np.random.random((self.P, self.T, self.K)),
                               decimals=3)  # increase rate due to new chargers NOTE: 增长率 超参先不管
         self.W = np.random.randint(1e8, 1.1e8, (self.P, self.T))  # NOTE: 电网能力，暂时放到无限大
-        self.L = 10.24  # capacity # NOTE: 光伏储能容量10.24度
+        self.L = 14.24  # capacity # NOTE: 光伏储能容量10.24度
         self.l = np.random.randint(2, 3, (self.T))  # NOTE: 光伏充电量4度/小时
         self.CC = (np.random.randint(36000, 42000, self.P) / 365).astype(int)  # NOTE: 光伏充电桩价格3w6-4w2
         self.budget = input_budget
         self.maxnumber = input_maxstation
-        self.D_one = 57.6  # 一个电动车最大电容量72千瓦时，假设单次充电为80%，
+        self.D_one = 8.8  # 一个电动车最大电容量72千瓦时，假设单次充电为80%，
         self.timelimit = input_timelimit
         self.objtype = input_objtype
 
@@ -258,11 +258,11 @@ class LBBD(object):
                         obj3 += self.q[p, t, k2, sw]  # 累加 q 项
 
         if self.objtype == 0:  # min cost but big area is meet
-            self.model.setObjective(obj + obj2, sense="minimize")  ##obj1
+            self.model.setObjective(obj + obj +  50*obj3, sense="minimize")  ##obj1
         elif self.objtype == 1:  # max area demand but don't care cost:
             self.model.setObjective(obj + obj2 + 10000 * obj3, sense="minimize")  ##obj2
         elif self.objtype == 2:  # balance
-            self.model.setObjective(obj + obj2 + 50 * obj3, sense="minimize")  ##obj3 where 50是一个惩罚因子，越大越说明cover demand越重要
+            self.model.setObjective(obj + obj2 + 500 * obj3, sense="minimize")  ##obj3 where 50是一个惩罚因子，越大越说明cover demand越重要
 
         lhs = sum(self.y[p] for p in range(self.P))
         self.model.addCons(lhs <= self.maxnumber)
@@ -272,34 +272,34 @@ class LBBD(object):
         obj2 = sum(self.z[p, t, sw] for p in range(self.P) for t in range(self.T) for sw in range(self.scenario))
         self.model.addCons(obj + (1 / self.scenario) * obj2 <= self.budget)
 
-        # Effective inequalities (translated from "有效不等式")
-        for t in range(self.T):
-            for sw in range(self.scenario):
-                for a in range(self.A):
-                    for k2 in range(self.K):
-                        lhs = 0
-                        for p in self.regions[a]:
-                            for k in range(self.K):
-                                if k <= k2:
-                                    lhs += self.N[k] * (1 - self.alpha[p, t, k]) * self.x[p, k]
-                        self.model.addCons(lhs >= self.D[a, t, k2, sw] - self.B_a[a, k2], name="effective_constraint_0")
-
-        for t in range(self.T):
-            for sw in range(self.scenario):
-                for a in range(self.A):
-                    lhs = sum(self.N[k] * (1 - self.alpha[p, t, k]) * self.x[p, k] for p in self.regions[a] for k in
-                              range(self.K))
-                    rhs = sum(self.D[a, t, k, sw] - self.B_a[a, k] for k in range(self.K))
-                    self.model.addCons(lhs >= rhs, name=f"effective_constraint_1_{a}")
-
-        # Area demand constraint
-        for t in range(self.T):
-            for sw in range(self.scenario):
-                for a in range(self.A):
-                    for k2 in range(self.K):
-                        lhs = sum((1 - self.alpha[p, t, k]) * self.w_k[p, t, k, k2, sw] for p in self.regions[a] for k in
-                                  range(self.K) if k <= k2)
-                        self.model.addCons(lhs + self.B_a[a, k2] >= self.D[a, t, k2, sw], name="area_demand_constraint")
+        # # Effective inequalities (translated from "有效不等式")
+        # for t in range(self.T):
+        #     for sw in range(self.scenario):
+        #         for a in range(self.A):
+        #             for k2 in range(self.K):
+        #                 lhs = 0
+        #                 for p in self.regions[a]:
+        #                     for k in range(self.K):
+        #                         if k <= k2:
+        #                             lhs += self.N[k] * (1 - self.alpha[p, t, k]) * self.x[p, k]
+        #                 self.model.addCons(lhs >= self.D[a, t, k2, sw] - self.B_a[a, k2], name="effective_constraint_0")
+        #
+        # for t in range(self.T):
+        #     for sw in range(self.scenario):
+        #         for a in range(self.A):
+        #             lhs = sum(self.N[k] * (1 - self.alpha[p, t, k]) * self.x[p, k] for p in self.regions[a] for k in
+        #                       range(self.K))
+        #             rhs = sum(self.D[a, t, k, sw] - self.B_a[a, k] for k in range(self.K))
+        #             self.model.addCons(lhs >= rhs, name=f"effective_constraint_1_{a}")
+        #
+        # # Area demand constraint
+        # for t in range(self.T):
+        #     for sw in range(self.scenario):
+        #         for a in range(self.A):
+        #             for k2 in range(self.K):
+        #                 lhs = sum((1 - self.alpha[p, t, k]) * self.w_k[p, t, k, k2, sw] for p in self.regions[a] for k in
+        #                           range(self.K) if k <= k2)
+        #                 self.model.addCons(lhs + self.B_a[a, k2] >= self.D[a, t, k2, sw], name="area_demand_constraint")
 
         # Modified constraint (您提到 "constraint 修改版")
         for t in range(self.T):
@@ -326,7 +326,7 @@ class LBBD(object):
                     # Add constraints to enforce piecewise linear behavior
                     # Here we approximate:
                     # if 0 <= self.w[p, t, sw] <= 1000, then self.z[p, t, sw] = 0.1 * self.w[p, t, sw]
-                    self.model.addCons(self.z[p, t, sw] == 1.2 * self.w[p, t, sw], "piecewise_1")
+                    self.model.addCons(self.z[p, t, sw] == 2.3 * self.w[p, t, sw], "piecewise_1")
                     # Other regions can be similarly added with additional constraints.
 
         # # # 手动线性化f_{pt}\left( w_{pt} \right) =w_{pt}\lambda _1+\left( 5w_{pt}\lambda _2+100\lambda _2 \right) +\left( 10w_{pt}\lambda _3+600\lambda _3 \right)
@@ -386,7 +386,7 @@ class LBBD(object):
             # SCIP 不需要 computeIIS 和 write，因为您提到不需要 IIS 分析
             self.finalresult = "No solution"
             # 返回 0, 0, 0, 0 和结果信息
-            return 0, 0, 0, 0, self.finalresult
+            return 0, 0, 0, 0, 0, self.finalresult
         else:
             obj_value = sum(self.F[p] * self.model.getVal(self.y[p]) for p in range(self.P))  # 计算 obj
             obj2_value = sum(self.model.getVal(self.z[p, t, sw]) for p in range(self.P) for t in range(self.T) for sw in
@@ -396,13 +396,12 @@ class LBBD(object):
                 range(self.K) for sw in range(self.scenario))  # 计算 obj3
             for p in range(self.P):
                 for k in range(self.K):
-                    self.finalresult[p, k] =self.model.getVal(self.x[p, k])
+                    self.finalresult[p, k] = self.model.getVal(self.x[p, k])
+            countstation = sum(self.model.getVal(self.y[p]) for p in range(self.P))
 
             # 返回计算结果
-        return obj_value + obj2_value, obj_value, obj2_value, obj3_value, self.finalresult
+        return obj_value + obj2_value, obj_value, obj2_value, obj3_value, countstation, self.finalresult
             # 获取解并存储在 self.finalresult 中
-
-    import folium
 
     def create_map(self, locations_and_sizes, df_b):
         # 创建基础地图（以香港为例）
@@ -442,20 +441,18 @@ class LBBD(object):
 
         return base_map
 
-
 if __name__ == '__main__':
     LBBD_solver = LBBD()
-    demand_file_path = './A_update.csv'
-    parameter_file_path = './B_update.csv'
     # LBBD_solver.set_instance()
-    LBBD_solver.read_instance(demand_file_path, parameter_file_path, 100000000, 100, 2,
-                              300)  # input_budget,input_maxstation,input_objtype,input_timelimit,
+    LBBD_solver.read_instance("./A_updated.csv", "./B_updated.csv", 100000000, 100, 1,
+                              60)  # input_budget,input_maxstation,input_objtype,input_timelimit,
     # where input_objtype is {0,1,2} represent
     # 0: min total cost when area demand is meet but demand of each p is ignored;
     # 1: max cover demand of each p and rea demand is meet, then to min cost
     # 2: min total cost when area demand is meet but demand of each p is moderate consideration;
-    totalcost, fixcost, opeationscost, uncoverddemand, finalresult = LBBD_solver.build_MIP_model()
+    totalcost, fixcost, opeationscost, uncoverddemand, countstation, finalresult = LBBD_solver.build_MIP_model()
+    print("totalcost:", totalcost, "fixcost:", fixcost, "operationscost", opeationscost, "station number", countstation,
+          "uncoverdemand:", uncoverddemand)
     print("____________________")
-    print("totalcost:", totalcost, "fixcost:", fixcost, "operationscost", opeationscost, "uncoverdemand:",
-          uncoverddemand)
     print("location and size:", finalresult)
+
