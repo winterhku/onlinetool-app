@@ -194,19 +194,20 @@ def main():
                                   time_limit)
 
         # 运行优化模型并获取结果
-        totalcost, fixcost, operationscost, uncoverddemand, finalresult = LBBD_solver.build_MIP_model()
+        totalcost, fixcost, operationscost, uncoverddemand,countstation, finalresult = LBBD_solver.build_MIP_model()
 
         st.write("Total Cost:",format(totalcost,'.2f'),"$")
         st.write("Fixed Cost:", format(fixcost,'.2f'),"$")
         st.write("Operations Cost:", format(operationscost,'.2f'),"$")
         st.write("Uncovered Demand:", format(uncoverddemand,'.0f'))
+        st.write("Station Number is:",format(countstation,'.0f'))
         # st.write("Location and Size:", finalresult)
 
         # 调用create_map来生成地图，传入finalresult和B文件数据
         map_ = LBBD_solver.create_map(finalresult, df_b)
         folium_static(map_)
     else:
-        st.write('Set parameters and press "Optimize Locations".')
+        st.write('Set parameters and press "Start Optimize".')
 
 
 if __name__ == '__main__':
