@@ -449,7 +449,7 @@ if __name__ == '__main__':
     parameter_file_path = './B_update.csv'
     # LBBD_solver.set_instance()
     LBBD_solver.read_instance(demand_file_path, parameter_file_path, 100000000, 100, 2,
-                              60)  # input_budget,input_maxstation,input_objtype,input_timelimit,
+                              300)  # input_budget,input_maxstation,input_objtype,input_timelimit,
     # where input_objtype is {0,1,2} represent
     # 0: min total cost when area demand is meet but demand of each p is ignored;
     # 1: max cover demand of each p and rea demand is meet, then to min cost
