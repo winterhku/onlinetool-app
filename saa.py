@@ -176,7 +176,7 @@ def main():
                                       index=2, help="Balanced means minimize the cost and maximize the demand at the same time.")
     objective_mapping = {'Minimize Cost': 0, 'Maximize Demand': 1, 'Balanced': 2}
     objective_type_value = objective_mapping[objective_type]
-    time_limit = st.sidebar.number_input('Optimization Time Limit (seconds):', min_value=30, max_value=300, value=300, help="The maximum time you want to wait for the solver.")
+    time_limit = st.sidebar.number_input('Optimization Time Limit (seconds):', min_value=30, max_value=300, value=60, help="The maximum time you want to wait for the solver.")
 
     if st.sidebar.button('Start optimize'):
         LBBD_solver = LBBD()
