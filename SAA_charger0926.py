@@ -431,7 +431,7 @@ class LBBD(object):
                      # 避免显示为负零的情况
                     slow_charge_display = int(slow_charge_num) if slow_charge_num == 0 else slow_charge_num
                     fast_charge_display = int(fast_charge_num) if fast_charge_num == 0 else fast_charge_num
-
+                    popup_content = f'<div style="color: white;">Slow: {slow_charge_display:.0f}, Fast: {fast_charge_display:.0f}</div>'
                     # 在地图上添加标记，使用CircleMarker来标识地点
                     folium.CircleMarker(
                         location=(lat, lng),
