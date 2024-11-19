@@ -418,22 +418,25 @@ class LBBD(object):
                     lng = location_data.iloc[0]['Longitude']
 
                     # 根据规模大小设置标记的颜色或大小
-                    total_size = slow_charge_num + fast_charge_num
-                    if total_size > 5:
-                        color = 'red'
-                        radius = 10
-                    elif total_size > 1:
-                        color = 'blue'
-                        radius = 7
-                    else:
-                        color = 'green'
-                        radius = 5
+                    # total_size = slow_charge_num + fast_charge_num
+                    # if total_size > 5:
+                    color = 'red'
+                    radius = 10
+                    # elif total_size > 1:
+                        # color = 'blue'
+                        # radius = 7
+                    # else:
+                        # color = 'green'
+                        # radius = 5
+                     # 避免显示为负零的情况
+                    slow_charge_display = int(slow_charge_num) if slow_charge_num == 0 else slow_charge_num
+                    fast_charge_display = int(fast_charge_num) if fast_charge_num == 0 else fast_charge_num
 
                     # 在地图上添加标记，使用CircleMarker来标识地点
                     folium.CircleMarker(
                         location=(lat, lng),
                         radius=radius,
-                        color=color,
+                        color='black',
                         fill=True,
                         fill_opacity=0.6,
                         popup=f'Slow: {format(slow_charge_num,'.0f')}, Fast: {format(fast_charge_num,'.0f')}'
