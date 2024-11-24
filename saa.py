@@ -172,7 +172,7 @@ def main():
     # 用户输入的参数
     budget = st.sidebar.number_input('Maximum Acceptable Budget Value:', min_value=0, value=100000000, help="Each fast charger is 20000 hkd,which is 50-150kW;Each slow charger is 5000 hkd,which is 7kW.")
     max_stations = st.sidebar.number_input('Maximum Number of Planned Charging Stations:', min_value=1, value=10, help="The maximum number of each charging station can be set is varies from 0-24.")
-    objective_type = st.sidebar.radio('Optimization Objective:', ['Minimize Cost', 'Maximize Demand', 'Balanced'],
+    objective_type = st.sidebar.radio('Optimization Objective:', ['Minimize Cost', 'Maximize Served Demand', 'Balanced'],
                                       index=2, help="Balanced means minimize the cost and maximize the demand at the same time.")
     objective_mapping = {'Minimize Cost': 0, 'Maximize Demand': 1, 'Balanced': 2}
     objective_type_value = objective_mapping[objective_type]
