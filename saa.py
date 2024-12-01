@@ -174,7 +174,7 @@ def main():
     max_stations = st.sidebar.number_input('Maximum Number of Planned Charging Stations:', min_value=1, value=10, help="The maximum number of each charging station can be set is varies from 0-24.")
     objective_type = st.sidebar.radio('Optimization Objective:', ['Minimize Cost', 'Maximize Served Demand', 'Balanced'],
                                       index=2, help="Balanced means minimize the cost and maximize the demand at the same time.")
-    objective_mapping = {'Minimize Cost': 0, 'Maximize Demand': 1, 'Balanced': 2}
+    objective_mapping = {'Minimize Cost': 0, 'Maximize Served Demand': 1, 'Balanced': 2}
     objective_type_value = objective_mapping[objective_type]
     time_limit = st.sidebar.number_input('Optimization Time Limit (seconds):', min_value=30, max_value=300, value=60, help="The maximum time you want to wait for the solver.")
 
